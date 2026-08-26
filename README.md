@@ -50,8 +50,8 @@ T3 Code 让你在统一的界面（Web / Desktop / Mobile）中操控本机的�
 # 1. 安装 vp（Vite+ 命令行工具，Windows PowerShell）
 irm https://vite.plus/ps1 | iex
 
-# 2. 克隆本仓库（替换为你的远端地址）
-git clone https://github.com/<你的账号>/t3code-zh-CN.git
+# 2. 克隆本仓库
+git clone https://github.com/EclipticAxis/t3code-zh-CN.git
 cd t3code-zh-CN
 
 # 3. 安装依赖
