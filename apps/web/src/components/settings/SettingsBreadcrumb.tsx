@@ -3,31 +3,49 @@ import {
   WorkspaceBreadcrumbItem,
   WorkspaceBreadcrumbSeparator,
 } from "../WorkspaceBreadcrumb";
-import { SETTINGS_SECTION_LABELS } from "./settingsSearch";
+import { useI18n } from "../../hooks/useI18n";
+import { settingsSectionLabel, type SettingsPath } from "./settingsSearch";
 
-const SETTINGS_BREADCRUMB_LABELS: Readonly<Record<string, string>> = {
-  ...SETTINGS_SECTION_LABELS,
-  "/settings/diagnostics": "Diagnostics",
-};
-
-function settingsBreadcrumbLabel(pathname: string): string | null {
+function settingsBreadcrumbLabel(
+  pathname: string,
+  t: ReturnType<typeof useI18n>["t"],
+): string | null {
   const normalizedPathname = pathname.replace(/\/+$/, "") || "/";
-  return SETTINGS_BREADCRUMB_LABELS[normalizedPathname] ?? null;
+  if (normalizedPathname === "/settings/diagnostics") {
+    return t("settings.breadcrumb.diagnostics");
+  }
+  if (normalizedPathname in SETTINGS_SECTION_PATHS) {
+    const path = normalizedPathname as SettingsPath;
+    return settingsSectionLabel(path, t);
+  }
+  return null;
 }
 
+const SETTINGS_SECTION_PATHS: Readonly<Record<string, true>> = {
+  "/settings/general": true,
+  "/settings/appearance": true,
+  "/settings/keybindings": true,
+  "/settings/providers": true,
+  "/settings/integrations": true,
+  "/settings/source-control": true,
+  "/settings/connections": true,
+  "/settings/archived": true,
+};
+
 export function SettingsBreadcrumb({ pathname }: { pathname: string }) {
-  const sectionLabel = settingsBreadcrumbLabel(pathname);
+  const { t } = useI18n();
+  const sectionLabel = settingsBreadcrumbLabel(pathname, t);
 
   return (
     <WorkspaceBreadcrumb ariaLabel="Settings breadcrumb">
       {sectionLabel ? (
         <>
-          <WorkspaceBreadcrumbItem>Settings</WorkspaceBreadcrumbItem>
+          <WorkspaceBreadcrumbItem>{t("settings.breadcrumb.root")}</WorkspaceBreadcrumbItem>
           <WorkspaceBreadcrumbSeparator />
         </>
       ) : null}
       <WorkspaceBreadcrumbItem current className="truncate">
-        {sectionLabel ?? "Settings"}
+        {sectionLabel ?? t("settings.breadcrumb.root")}
       </WorkspaceBreadcrumbItem>
     </WorkspaceBreadcrumb>
   );

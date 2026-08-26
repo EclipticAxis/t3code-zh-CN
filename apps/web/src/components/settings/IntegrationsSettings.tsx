@@ -26,6 +26,7 @@ import type { ReactNode } from "react";
 
 import { ScreenRotationIcon } from "~/browser/ScreenRotationIcon";
 import { isElectron } from "../../env";
+import { useI18n } from "../../hooks/useI18n";
 
 import { Button } from "../ui/button";
 import { NumberField, NumberFieldGroup, NumberFieldInput } from "../ui/number-field";
@@ -454,6 +455,7 @@ function DesktopOnlyBrowserDefaults({ children }: { readonly children: ReactNode
 }
 
 export function IntegrationsSettingsPanel() {
+  const { t } = useI18n();
   // Client-local preview defaults are editable only where the preview exists.
   const previewDefaultsDisabled = !isElectron;
   const previewDefaults = (
@@ -467,7 +469,7 @@ export function IntegrationsSettingsPanel() {
 
   return (
     <SettingsPageContainer>
-      <SettingsSection id="browser" title="Browser">
+      <SettingsSection id="browser" title={t("settings.section.browser")}>
         {/* Server-authoritative, so it stays editable on every client and sits
             outside the block covering the desktop-only defaults. */}
         <AgentBrowserAccessSetting />

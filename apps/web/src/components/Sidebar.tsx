@@ -103,6 +103,7 @@ import { useHandleNewThread } from "../hooks/useHandleNewThread";
 import { openCommandPalette } from "../commandPaletteBus";
 import { startNewThreadFromContext } from "../lib/chatThreadActions";
 import { useClientSettings } from "../hooks/useSettings";
+import { useI18n } from "../hooks/useI18n";
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useNowMinute } from "../hooks/useNowMinute";
@@ -1726,6 +1727,7 @@ export default function Sidebar() {
   const threads = useThreadShells();
   const router = useRouter();
   const { isMobile, setOpenMobile } = useSidebar();
+  const { t } = useI18n();
   const keybindings = useAtomValue(primaryServerKeybindingsAtom);
   const autoSettleAfterDays = useClientSettings((s) => s.sidebarAutoSettleAfterDays);
   const autoSettleOnMerge = useClientSettings((s) => s.sidebarAutoSettleOnMerge);
@@ -3510,7 +3512,7 @@ export default function Sidebar() {
                       <FolderIcon className="size-4 shrink-0" />
                     )}
                     <span className="min-w-0 flex-1 truncate">
-                      {scopedProjectGroup?.displayName ?? "All projects"}
+                      {scopedProjectGroup?.displayName ?? t("sidebar.allProjects")}
                     </span>
                     <ChevronDownIcon className="-mr-px size-4 shrink-0" />
                   </MenuTrigger>
@@ -3527,7 +3529,7 @@ export default function Sidebar() {
                         className="h-8 min-h-8 py-0 text-sm font-medium [&>span:last-child]:flex [&>span:last-child]:min-w-0 [&>span:last-child]:items-center [&>span:last-child]:gap-2"
                       >
                         <FolderIcon className="size-4 shrink-0" />
-                        <span className="min-w-0 truncate text-sm">All projects</span>
+                        <span className="min-w-0 truncate text-sm">{t("sidebar.allProjects")}</span>
                       </MenuRadioItem>
                       {projectGroups.map((project) => {
                         const scopeKey = project.projectKey;
@@ -3918,7 +3920,9 @@ export default function Sidebar() {
                       className="flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-left text-sm text-sidebar-muted-foreground/55 hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
                     >
                       <PlusIcon aria-hidden className="size-4 shrink-0" />
-                      Show {Math.min(hiddenSettledCount, SETTLED_TAIL_PAGE_COUNT)} more
+                      {t("sidebar.showMore", {
+                        count: Math.min(hiddenSettledCount, SETTLED_TAIL_PAGE_COUNT),
+                      })}
                     </button>
                   </li>
                 ) : null}
@@ -3935,20 +3939,20 @@ export default function Sidebar() {
             <div className="flex flex-col items-center gap-2 px-2 py-6 text-center text-xs text-muted-foreground/60">
               {projects.length === 0 ? (
                 <>
-                  <span>No projects yet</span>
+                  <span>{t("sidebar.noProjects")}</span>
                   <button
                     type="button"
                     onClick={openAddProjectCommandPalette}
                     className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-sidebar-border px-2.5 py-1 text-[11px] font-medium text-sidebar-muted-foreground transition-colors hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
                   >
                     <PlusIcon className="-mx-0.5 size-3" />
-                    Add project
+                    {t("sidebar.addProject")}
                   </button>
                 </>
               ) : scopedProjectGroup ? (
-                `No threads in ${scopedProjectGroup.displayName} yet`
+                t("sidebar.noThreadsInProject", { project: scopedProjectGroup.displayName })
               ) : (
-                "No threads yet"
+                t("sidebar.noThreads")
               )}
             </div>
           ) : null}

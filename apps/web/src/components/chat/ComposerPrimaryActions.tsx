@@ -1,6 +1,7 @@
 import { memo, type PointerEventHandler } from "react";
 import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
 import { useEnvironmentIdentificationMode } from "~/hooks/useSettings";
+import { useI18n } from "~/hooks/useI18n";
 import { cn } from "~/lib/utils";
 import { StageBackdropButtonArt, useSidebarStageBackdropVariant } from "../SidebarStageBackdrop";
 import { Button } from "../ui/button";
@@ -81,6 +82,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
     : undefined;
   const environmentIdentificationMode = useEnvironmentIdentificationMode();
   const isSendDisabled = sendDisabledReason !== null;
+  const { t } = useI18n();
   const stageBackdropVariant = useSidebarStageBackdropVariant(
     environmentIdentificationMode === "artwork",
   );
@@ -246,7 +248,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
                 ? "Preparing worktree"
                 : isSendBusy
                   ? "Sending"
-                  : "Send message"
+                  : t("chat.sendMessage")
       }
     >
       {stageBackdropVariant ? (

@@ -65,6 +65,7 @@ import {
 } from "../../hooks/useTheme";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { usePrimarySettings, useUpdatePrimarySettings } from "../../hooks/useSettings";
+import { useI18n } from "../../hooks/useI18n";
 import { useThreadActions } from "../../hooks/useThreadActions";
 import { useDesktopUpdateState } from "../../state/desktopUpdate";
 import {
@@ -975,6 +976,7 @@ function BackgroundActivityAdvancedDialog({
 }
 
 export function AppearanceSettingsPanel() {
+  const { t } = useI18n();
   const {
     appearanceMode,
     refreshTheme,
@@ -1008,7 +1010,7 @@ export function AppearanceSettingsPanel() {
 
   return (
     <SettingsPageContainer>
-      <SettingsSection id="appearance" title="Appearance">
+      <SettingsSection id="appearance" title={t("settings.section.appearance")}>
         <div id={searchableSetting("theme").id}>
           <ThemeLibrary
             appearanceMode={appearanceMode}
@@ -1258,6 +1260,7 @@ function CodeFontRow({
   description?: string;
   preview?: ReactNode;
 }) {
+  const { t } = useI18n();
   const settings = usePrimarySettings();
   const updateSettings = useUpdatePrimarySettings();
   const defaults = useFontDefaultFamilies();
@@ -1404,12 +1407,13 @@ function FontSettingsGroup() {
  * under each row show every surface the choice reaches.
  */
 function SimpleFontRows() {
+  const { t } = useI18n();
   const settings = usePrimarySettings();
   return (
     <>
       <InterfaceFontRow preview={<PromptFontPreview />} />
       <CodeFontRow
-        title="Monospace font"
+        title={t("settings.option.monospaceFont")}
         description="Code blocks, diffs, file previews, and the terminal."
         preview={
           <>
@@ -1854,6 +1858,7 @@ function LegacyFeaturesSection() {
 }
 
 export function GeneralSettingsPanel() {
+  const { t } = useI18n();
   const settings = usePrimarySettings();
   const updateSettings = useUpdatePrimarySettings();
   const [backgroundActivityDialogOpen, setBackgroundActivityDialogOpen] = useState(false);
@@ -1908,7 +1913,7 @@ export function GeneralSettingsPanel() {
 
   return (
     <SettingsPageContainer>
-      <SettingsSection title="General">
+      <SettingsSection title={t("settings.section.general")}>
         <SettingsRow
           {...searchableSetting("project-grouping")}
           description="Combine matching repositories across environments."
@@ -2472,7 +2477,7 @@ export function GeneralSettingsPanel() {
         />
       </SettingsSection>
 
-      <SettingsSection title="About">
+      <SettingsSection title={t("settings.section.about")}>
         {isElectron || HOSTED_APP_CHANNEL ? (
           <AboutVersionSection />
         ) : (
@@ -2498,6 +2503,7 @@ export function GeneralSettingsPanel() {
 }
 
 export function ArchivedThreadsPanel() {
+  const { t } = useI18n();
   const projects = useProjects();
   const { unarchiveThread, confirmAndDeleteThread } = useThreadActions();
   const environmentIds = useMemo(

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { createI18n } from "@t3tools/shared/i18n";
+
 import {
   searchableSetting,
   searchSettings,
@@ -7,52 +9,60 @@ import {
   type SettingsSearchItem,
 } from "./settingsSearch";
 
+// Titles in the catalog are i18n keys; tests resolve them with the English
+// locale so assertions stay deterministic English strings.
+const en = createI18n({ locale: "en" });
+
 const ITEMS: ReadonlyArray<SettingsSearchItem> = [
   {
     id: "word-wrap",
-    title: "Word wrap",
+    title: "settings.option.wordWrap",
     to: "/settings/general",
   },
   {
-    id: "network-access",
-    title: "Network access",
+    id: "color-scheme",
+    title: "settings.option.colorScheme",
     to: "/settings/connections",
   },
   {
     id: "providers",
-    title: "Providers",
+    title: "settings.option.providers",
     to: "/settings/providers",
   },
   {
-    id: "provider-updates",
-    title: "Update checks",
+    id: "provider-update-checks",
+    title: "settings.option.providerUpdateChecks",
     to: "/settings/general",
   },
   {
-    id: "automatic-updates",
-    title: "Automatic updates",
-    to: "/settings/general",
+    id: "archive",
+    title: "settings.option.archivedThreads",
+    to: "/settings/archived",
   },
 ];
 
 describe("searchSettings", () => {
   it("matches only setting titles", () => {
-    expect(searchSettings("word", ITEMS).map((item) => item.id)).toEqual(["word-wrap"]);
-    expect(searchSettings("network", ITEMS).map((item) => item.id)).toEqual(["network-access"]);
-    expect(searchSettings("connections", ITEMS)).toEqual([]);
-    expect(searchSettings("claude", ITEMS)).toEqual([]);
+    expect(searchSettings("word", ITEMS, en.t).map((item) => item.id)).toEqual(["word-wrap"]);
+    expect(searchSettings("scheme", ITEMS, en.t).map((item) => item.id)).toEqual(["color-scheme"]);
+    expect(searchSettings("connections", ITEMS, en.t)).toEqual([]);
+    expect(searchSettings("claude", ITEMS, en.t)).toEqual([]);
   });
 
   it("matches normalized title substrings", () => {
-    expect(searchSettings("  WORD   WRAP  ", ITEMS).map((item) => item.id)).toEqual(["word-wrap"]);
-    expect(searchSettings("glass").map((item) => item.id)).toEqual(["setting-glass-opacity"]);
-    expect(searchSettings("xyzzy")).toEqual([]);
+    expect(searchSettings("  WORD   WRAP  ", ITEMS, en.t).map((item) => item.id)).toEqual([
+      "word-wrap",
+    ]);
+    expect(searchSettings("glass", undefined, en.t).map((item) => item.id)).toEqual([
+      "setting-glass-opacity",
+    ]);
+    expect(searchSettings("xyzzy", undefined, en.t)).toEqual([]);
   });
 
   it("keeps catalog order for multiple title matches", () => {
-    expect(searchSettings("update", ITEMS).map((item) => item.id)).toEqual([
-      "provider-updates",
-      "automatic-updates",
+    expect(searchSettings("confirmation", undefined, en.t).map((item) => item.id)).toEqual([
+      "archive-confirmation",
+      "delete-confirmation",
     ]);
   });
 
@@ -62,7 +72,7 @@ describe("searchSettings", () => {
 
   it("hides desktop-only settings from browser search", () => {
     expect(SETTINGS_SEARCH_ITEMS.some((item) => item.id === "quit-confirmation")).toBe(true);
-    expect(searchSettings("quit confirmation")).toEqual([]);
+    expect(searchSettings("hold to quit", undefined, en.t)).toEqual([]);
   });
 
   it("keeps catalog result ids unique", () => {
@@ -71,20 +81,23 @@ describe("searchSettings", () => {
   });
 
   it("serves anchor props to panels from the catalog", () => {
-    expect(searchableSetting("word-wrap")).toEqual({ id: "word-wrap", title: "Word wrap" });
-    expect(searchableSetting("archive")).toEqual({ id: "archive", title: "Archived threads" });
+    expect(searchableSetting("word-wrap", en.t)).toEqual({ id: "word-wrap", title: "Word wrap" });
+    expect(searchableSetting("archive", en.t)).toEqual({
+      id: "archive",
+      title: "Archived threads",
+    });
   });
 
   it("routes appearance settings to their current section", () => {
-    expect(searchSettings("theme")[0]).toMatchObject({
+    expect(searchSettings("theme", undefined, en.t)[0]).toMatchObject({
       id: "theme",
       to: "/settings/appearance",
     });
-    expect(searchSettings("word wrap")[0]).toMatchObject({
+    expect(searchSettings("word wrap", undefined, en.t)[0]).toMatchObject({
       id: "word-wrap",
       to: "/settings/appearance",
     });
-    expect(searchSettings("environment identification")[0]).toMatchObject({
+    expect(searchSettings("environment identification", undefined, en.t)[0]).toMatchObject({
       id: "environment-identification",
       to: "/settings/appearance",
       targetId: "appearance",

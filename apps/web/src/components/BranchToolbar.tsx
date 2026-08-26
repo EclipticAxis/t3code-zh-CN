@@ -14,6 +14,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 import { useComposerDraftStore, type DraftId } from "../composerDraftStore";
 import { useProject, useThread, useThreadShellsForProjectRefs } from "../state/entities";
 import { useIsMobile } from "../hooks/useMediaQuery";
+import { useI18n } from "../hooks/useI18n";
 import {
   type EnvMode,
   type EnvironmentOption,
@@ -88,6 +89,7 @@ const MobileRunContextSelector = memo(function MobileRunContextSelector({
   previousWorktreeLabel,
   onUsePreviousWorktree,
 }: MobileRunContextSelectorProps) {
+  const { t } = useI18n();
   const activeEnvironment = useMemo(
     () => availableEnvironments?.find((env) => env.environmentId === environmentId) ?? null,
     [availableEnvironments, environmentId],
@@ -119,7 +121,9 @@ const MobileRunContextSelector = memo(function MobileRunContextSelector({
     <>
       {icon}
       <span className="min-w-0 truncate">
-        {showEnvironmentIndicator ? (activeEnvironment?.label ?? "Run on") : workspaceLabel}
+        {showEnvironmentIndicator
+          ? (activeEnvironment?.label ?? t("topbar.runOn"))
+          : workspaceLabel}
       </span>
     </>
   );
@@ -145,7 +149,7 @@ const MobileRunContextSelector = memo(function MobileRunContextSelector({
         {showEnvironmentPicker && availableEnvironments && onEnvironmentChange ? (
           <>
             <MenuGroup>
-              <MenuGroupLabel>Run on</MenuGroupLabel>
+              <MenuGroupLabel>{t("topbar.runOn")}</MenuGroupLabel>
               <MenuRadioGroup
                 value={environmentId}
                 onValueChange={(value) => onEnvironmentChange(value as EnvironmentId)}

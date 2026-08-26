@@ -9,6 +9,7 @@ import { memo, useCallback } from "react";
 import { Link, useCanGoBack, useLocation, useNavigate } from "@tanstack/react-router";
 
 import { useEnvironmentIdentificationMode } from "../../hooks/useSettings";
+import { useI18n } from "../../hooks/useI18n";
 import { cn } from "../../lib/utils";
 import { useEnvironments } from "../../state/environments";
 import {
@@ -147,6 +148,7 @@ export const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
   const navigate = useNavigate();
   const canGoBack = useCanGoBack();
   const { isMobile, setOpenMobile } = useSidebar();
+  const { t } = useI18n();
   const currentFooterPage = useLocation({
     select: (location) =>
       /^\/settings(?:\/|$)/.test(location.pathname)
@@ -199,26 +201,26 @@ export const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
         <SidebarMenuItem className="min-w-0 flex-1">
           <SidebarMenuButton onClick={handleBackClick}>
             <ArrowLeftIcon />
-            <span>Back</span>
+            <span>{t("sidebar.back")}</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       ) : (
         <>
           <SidebarUtilityItem
             icon={<SettingsIcon />}
-            label="Settings"
+            label={t("settings.title")}
             onClick={handleSettingsClick}
           />
           {pullRequestsSupported ? (
             <SidebarUtilityItem
               icon={<GitPullRequestIcon />}
-              label="Pull Requests"
+              label={t("sidebar.pullRequests")}
               onClick={handlePullRequestsClick}
             />
           ) : null}
           <SidebarUtilityItem
             icon={<ChartNoAxesColumnIcon />}
-            label="Usage"
+            label={t("sidebar.usage")}
             onClick={handleUsageClick}
           />
         </>

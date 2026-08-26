@@ -13,6 +13,7 @@
  */
 import { PlusIcon, RefreshCwIcon, SearchIcon } from "lucide-react";
 
+import { useI18n } from "../../hooks/useI18n";
 import { openCommandPalette } from "../../commandPaletteBus";
 import { Button } from "../ui/button";
 import { PullRequestListGhost } from "./PullRequestGhosts";
@@ -96,6 +97,7 @@ export function PullRequestListEmptyState({
   onLoadMore: () => void;
   onRefresh: () => void;
 }) {
+  const { t } = useI18n();
   // Ahead of the search and the filters, because neither can produce a row until a project does.
   if (!hasProjects) {
     return (
@@ -161,7 +163,7 @@ export function PullRequestListEmptyState({
     <Empty className="py-16">
       <BranchMark joined={false} />
       <EmptyHeader>
-        <EmptyTitle>{filtered ? "Nothing under these filters" : "No pull requests"}</EmptyTitle>
+        <EmptyTitle>{filtered ? "Nothing under these filters" : t("prList.empty")}</EmptyTitle>
         <EmptyDescription>
           {filtered
             ? "Widen the state, involvement or project filter to see more."

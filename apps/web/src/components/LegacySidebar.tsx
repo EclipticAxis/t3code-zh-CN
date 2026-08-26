@@ -194,6 +194,7 @@ import { useCopyToClipboard } from "~/hooks/useCopyToClipboard";
 import { useIsMobile } from "~/hooks/useMediaQuery";
 import { CommandDialogTrigger } from "./ui/command";
 import { useClientSettings, useUpdateClientSettings } from "~/hooks/useSettings";
+import { useI18n } from "~/hooks/useI18n";
 import { primaryServerKeybindingsAtom } from "../state/server";
 import {
   derivePhysicalProjectKey,
@@ -993,6 +994,7 @@ const SidebarProjectThreadList = memo(function SidebarProjectThreadList(
     expandThreadListForProject,
     collapseThreadListForProject,
   } = props;
+  const { t } = useI18n();
   const showMoreButtonRender = useMemo(() => <button type="button" />, []);
   const showLessButtonRender = useMemo(() => <button type="button" />, []);
 
@@ -1007,7 +1009,7 @@ const SidebarProjectThreadList = memo(function SidebarProjectThreadList(
             data-thread-selection-safe
             className="flex h-8 w-full translate-x-0 items-center px-2 text-left text-xs text-sidebar-muted-foreground/75"
           >
-            <span>No threads yet</span>
+            <span>{t("sidebar.noThreads")}</span>
           </div>
         </SidebarMenuSubItem>
       ) : null}
@@ -2848,6 +2850,8 @@ const SidebarProjectsContent = memo(function SidebarProjectsContent(
     projectsLength,
   } = props;
 
+  const { t } = useI18n();
+
   const handleProjectSortOrderChange = useCallback(
     (sortOrder: SidebarProjectSortOrder) => {
       updateSettings({ sidebarProjectSortOrder: sortOrder });
@@ -2885,7 +2889,7 @@ const SidebarProjectsContent = memo(function SidebarProjectsContent(
                 }
               >
                 <SearchIcon />
-                <span className="flex-1 truncate">Search</span>
+                <span className="flex-1 truncate">{t("sidebar.search")}</span>
                 {commandPaletteShortcutLabel ? (
                   <Kbd className="h-4 min-w-0 rounded-sm px-1.5 text-[10px]">
                     {commandPaletteShortcutLabel}
@@ -2923,7 +2927,9 @@ const SidebarProjectsContent = memo(function SidebarProjectsContent(
       <LocalSecondaryStatus />
       <SidebarGroup className="px-2 py-2">
         <div className="mb-1 flex items-center justify-between pl-2 pr-1.5">
-          <span className="text-xs font-medium text-sidebar-muted-foreground/80">Projects</span>
+          <span className="text-xs font-medium text-sidebar-muted-foreground/80">
+            {t("sidebar.projects")}
+          </span>
           <div className="flex items-center gap-1">
             <ProjectSortMenu
               projectSortOrder={projectSortOrder}
@@ -3029,7 +3035,9 @@ const SidebarProjectsContent = memo(function SidebarProjectsContent(
         )}
 
         {projectsLength === 0 && (
-          <div className="px-2 pt-4 text-center text-secondary-label text-xs">No projects yet</div>
+          <div className="px-2 pt-4 text-center text-secondary-label text-xs">
+            {t("sidebar.noProjects")}
+          </div>
         )}
       </SidebarGroup>
     </SidebarContent>
