@@ -39,6 +39,16 @@ export const enMessages = {
   "chat.contextWindow.title": "Context Window",
   "chat.contextWindow.totalProcessed": "Total processed",
   "chat.contextWindow.usageAria": "Context window usage",
+  "chat.composer.placeholder.default":
+    "Ask anything, @tag files/folders, $use skills, or / for commands",
+  "chat.composer.placeholder.disconnected": "Ask for changes, send follow-ups, or attach images",
+  "chat.composer.placeholder.approval": "Resolve this approval request to continue",
+  "chat.composer.placeholder.customAnswer":
+    "Type your own answer, or leave this blank to use the selected option",
+  "chat.composer.placeholder.planFeedback":
+    "Add feedback to refine the plan, or leave this blank to implement it",
+  "chat.composer.placeholder.chooseProject": "Choose a project above to start a thread",
+  "chat.composer.placeholder.enableProvider": "Enable a provider in Settings to send a message",
   "settings.section.general": "General",
   "settings.section.appearance": "Appearance",
   "settings.section.keybindings": "Keybindings",

@@ -44,7 +44,6 @@ import {
   expandCollapsedComposerCursor,
   replaceTextRange,
 } from "../../composer-logic";
-import { DISCONNECTED_COMPOSER_PLACEHOLDER } from "../../composerPlaceholder";
 import { deriveComposerSendState, readFileAsDataUrl } from "../ChatView.logic";
 import {
   dataTransferHasComposerMention,
@@ -3409,19 +3408,18 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                   onPaste={onComposerPaste}
                   placeholder={
                     isComposerApprovalState
-                      ? (activePendingApproval?.detail ??
-                        "Resolve this approval request to continue")
+                      ? (activePendingApproval?.detail ?? t("chat.composer.placeholder.approval"))
                       : activePendingProgress
-                        ? "Type your own answer, or leave this blank to use the selected option"
+                        ? t("chat.composer.placeholder.customAnswer")
                         : showPlanFollowUpPrompt && activeProposedPlan
-                          ? "Add feedback to refine the plan, or leave this blank to implement it"
+                          ? t("chat.composer.placeholder.planFeedback")
                           : projectSelectionRequired
-                            ? "Choose a project above to start a thread"
+                            ? t("chat.composer.placeholder.chooseProject")
                             : noProviderAvailable
-                              ? "Enable a provider in Settings to send a message"
+                              ? t("chat.composer.placeholder.enableProvider")
                               : phase === "disconnected"
-                                ? DISCONNECTED_COMPOSER_PLACEHOLDER
-                                : "Ask anything, @tag files/folders, $use skills, or / for commands"
+                                ? t("chat.composer.placeholder.disconnected")
+                                : t("chat.composer.placeholder.default")
                   }
                   disabled={isConnecting || isComposerApprovalState || projectSelectionRequired}
                 />
