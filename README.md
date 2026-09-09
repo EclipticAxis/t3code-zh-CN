@@ -1,5 +1,8 @@
 # T3 Code
 
+> [!NOTE]
+> **简体中文本地化版（zh-CN）** — 本仓库基于官方 [T3 Code](https://github.com/pingdotgg/t3code) 最新版，并内建 i18n 多语言框架与简体中文本地化。默认语言为简体中文；如需切换英文，调用 `i18n.setLocale("en")`（Web 端通过 `useI18n()` 的订阅自动重渲染）。框架与扩展规范见 [docs/internals/i18n.md](docs/internals/i18n.md)，翻译目录位于 `packages/shared/src/i18n/`（`en.ts` / `zh-CN.ts`）。若以二进制分发，确保已应用桌面端本地化与原生菜单翻译。
+
 T3 Code is an "agent harness control surface". It enables control of the agents on your machine with a best-in-class mobile app ([iOS](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824), [Android](https://play.google.com/store/apps/details?id=com.t3tools.t3code)), [web app](https://app.t3.codes) and [Electron-based desktop app](https://t3.codes).
 
 Works with your subscriptions on Claude Code, Codex, Cursor, Grok Build, OpenCode, and Google Antigravity. If they're set up on your computer, T3 Code can control them.
